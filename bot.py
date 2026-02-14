@@ -1,4 +1,5 @@
 import datetime
+import json
 from datetime import datetime
 from telegram.ext import MessageHandler
 from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove
@@ -19,10 +20,15 @@ GROUP_CHAT_ID = -1003824519107 # позже вставим
 google_creds = os.getenv("GOOGLE_CREDENTIALS")
 
 if not google_creds:
-    raise ValueError("GOOGLE_CREDENTIALS environment variable is not set")
+    raise ValueError("GOOGLE_CREDENTIALS not set")
 
 creds_dict = json.loads(google_creds)
 gc = gspread.service_account_from_dict(creds_dict)
+sheet = gc.open("Order_Yakutia.media").sheet1
+<<<<<<< HEAD
+=======
+sheet = gc.open("Order_Yakutia.media").sheet1
+>>>>>>> dd963c1 (Fix Google credentials via env)
 
 TYPE, CATEGORY, DATE, PLACE, PEOPLE, NAME, PHONE, DESCRIPTION, CONFIRM = range(9)
 
@@ -205,8 +211,10 @@ async def get_people(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"<b>Дата:</b> {context.user_data['date']}\n"
         f"<b>Место:</b> {context.user_data['place']}\n"
         f"<b>Имя:</b> {context.user_data['name']}\n"
-        f"<b>Телефон:</b> {context.user_data['phone']}\n\n"
-        f"<b>Описание:</b>\n{context.user_data['description']}\n\n"
+        f"<b>Телефон:</b> {context.user_data['phone']}\n"
+        f"\n"
+        f"<b>Описание:</b>\n{context.user_data['description']}\n"
+        f"\n"
         f"<b>Ожидаемое количество:</b> {context.user_data['people']}"
     )
 
@@ -255,16 +263,16 @@ async def confirm_application(update: Update, context: ContextTypes.DEFAULT_TYPE
 ])
 
     message = (
-        f"<b>📥 Новая заявка</b>\n\n"
-        f"<b>Тип:</b> {context.user_data['type']}\n"
-        f"<b>Категория:</b> {context.user_data['category']}\n"
-        f"<b>Дата:</b> {context.user_data['date']}\n"
-        f"<b>Место:</b> {context.user_data['place']}\n"
-        f"<b>Имя:</b> {context.user_data['name']}\n"
-        f"<b>Телефон:</b> {context.user_data['phone']}"
-        f"<b>Ожидаемое количество:</b> {context.user_data['people']}\n"
-        f"<b>Описание:</b>\n{context.user_data['description']}"
-    )
+    f"<b>📥 Новая заявка</b>\n\n"
+    f"<b>Тип:</b> {context.user_data['type']}\n"
+    f"<b>Категория:</b> {context.user_data['category']}\n"
+    f"<b>Дата:</b> {context.user_data['date']}\n"
+    f"<b>Место:</b> {context.user_data['place']}\n"
+    f"<b>Имя:</b> {context.user_data['name']}\n"
+    f"<b>Телефон:</b> {context.user_data['phone']}\n"
+    f"<b>Ожидаемое количество:</b> {context.user_data['people']}\n"
+    f"<b>Описание:</b>\n{context.user_data['description']}"
+)
 
     await context.bot.send_message(
         chat_id=GROUP_CHAT_ID,
