@@ -16,8 +16,13 @@ BOT_TOKEN = os.getenv("BOT_TOKEN")
 GROUP_CHAT_ID = -1003824519107 # позже вставим
 
 # ==== Google Sheets ====
-gc = gspread.service_account("credentials.json")
-sheet = gc.open("Order_Yakutia.media").sheet1
+google_creds = os.getenv("GOOGLE_CREDENTIALS")
+
+if not google_creds:
+    raise ValueError("GOOGLE_CREDENTIALS environment variable is not set")
+
+creds_dict = json.loads(google_creds)
+gc = gspread.service_account_from_dict(creds_dict)
 
 TYPE, CATEGORY, DATE, PLACE, PEOPLE, NAME, PHONE, DESCRIPTION, CONFIRM = range(9)
 
