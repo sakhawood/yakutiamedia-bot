@@ -26,7 +26,7 @@ creds_dict = json.loads(google_creds)
 gc = gspread.service_account_from_dict(creds_dict)
 sheet = gc.open("Order_Yakutia.media").sheet1
 
-TYPE, CATEGORY, DATE, PLACE, PEOPLE, NAME, PHONE, DESCRIPTION, CONFIRM = range(9)
+TYPE, CATEGORY, DATE, TIME, PLACE, PEOPLE, NAME, PHONE, DESCRIPTION, CONFIRM = range(10)
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -119,6 +119,29 @@ async def get_date(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.message.reply_text(
         "Шаг 4 из 6\n\nГде будет проходить мероприятие?"
+    )
+
+    await update.message.reply_text(
+    "Введите время начала мероприятия (например: 14:00)"
+)
+return TIME
+
+async def get_time(update: Update, context: ContextTypes.DEFAULT_TYPE):
+
+    user_input = update.message.text.strip()
+
+    try:
+        datetime.strptime(user_input, "%H:%M")
+    except ValueError:
+        await update.message.reply_text(
+            "Неверный формат времени. Введите в формате ЧЧ:ММ (например 14:00)"
+        )
+        return TIME
+
+    context.user_data["start_time"] = user_input
+
+    await update.message.reply_text(
+        "Где будет проходить мероприятие?"
     )
 
     return PLACE
@@ -250,22 +273,23 @@ async def confirm_application(update: Update, context: ContextTypes.DEFAULT_TYPE
     sheet.append_row([
     event_id,
     now,
-    "создано",  # начальный статус
+    "создано",
     context.user_data["type"],
     context.user_data["category"],
     context.user_data["date"],
+    context.user_data["start_time"],
     context.user_data["place"],
     context.user_data["people"],
     context.user_data["name"],
     context.user_data["phone"],
     context.user_data["description"]
 ])
-
     message = (
     f"<b>📥 Новая заявка</b>\n\n"
     f"<b>Тип:</b> {context.user_data['type']}\n"
     f"<b>Категория:</b> {context.user_data['category']}\n"
     f"<b>Дата:</b> {context.user_data['date']}\n"
+    f"<b>Время начала:</b> {context.user_data['start_time']}\n"
     f"<b>Место:</b> {context.user_data['place']}\n"
     f"<b>Имя:</b> {context.user_data['name']}\n"
     f"<b>Телефон:</b> {context.user_data['phone']}\n"
@@ -327,6 +351,7 @@ def main():
     TYPE: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_type)],
     CATEGORY: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_category)],
     DATE: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_date)],
+    TIME: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_time)],
     PLACE: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_place)],
     NAME: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_name)],
     PHONE: [MessageHandler(filters.TEXT | filters.CONTACT, get_phone)],
