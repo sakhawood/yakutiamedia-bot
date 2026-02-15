@@ -344,17 +344,17 @@ def main():
         )
     ],
     states={
-    TYPE: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_type)],
-    CATEGORY: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_category)],
-    DATE: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_date)],
-    TIME: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_time)],  # ← ОБЯЗАТЕЛЬНО
-    PLACE: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_place)],
-    NAME: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_name)],
-    PHONE: [MessageHandler(filters.TEXT | filters.CONTACT, get_phone)],
-    DESCRIPTION: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_description)],
-    PEOPLE: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_people)],
-    CONFIRM: [MessageHandler(filters.TEXT & ~filters.COMMAND, confirm_application)],
-},
+        TYPE: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_type)],
+        CATEGORY: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_category)],
+        DATE: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_date)],
+        TIME: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_time)],  # ← ОБЯЗАТЕЛЬНО
+        PLACE: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_place)],
+        NAME: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_name)],
+        PHONE: [MessageHandler(filters.TEXT | filters.CONTACT, get_phone)],
+        DESCRIPTION: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_description)],
+        PEOPLE: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_people)],
+        CONFIRM: [MessageHandler(filters.TEXT & ~filters.COMMAND, confirm_application)],
+    },
     fallbacks=[
         CommandHandler("cancel", cancel)
     ],
