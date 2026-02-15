@@ -245,9 +245,12 @@ async def confirm_application(update: Update, context: ContextTypes.DEFAULT_TYPE
         return CONFIRM
 
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    event_id = datetime.now().strftime("%Y%m%d%H%M%S")
 
     sheet.append_row([
+    event_id,
     now,
+    "создано",  # начальный статус
     context.user_data["type"],
     context.user_data["category"],
     context.user_data["date"],
