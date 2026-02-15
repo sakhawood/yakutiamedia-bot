@@ -220,18 +220,19 @@ async def get_people(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data["people"] = int(text)
 
     summary = (
-        f"<b>Проверьте данные:</b>\n\n"
-        f"<b>Тип:</b> {context.user_data['type']}\n"
-        f"<b>Категория:</b> {context.user_data['category']}\n"
-        f"<b>Дата:</b> {context.user_data['date']}\n"
-        f"<b>Место:</b> {context.user_data['place']}\n"
-        f"<b>Имя:</b> {context.user_data['name']}\n"
-        f"<b>Телефон:</b> {context.user_data['phone']}\n"
-        f"\n"
-        f"<b>Описание:</b>\n{context.user_data['description']}\n"
-        f"\n"
-        f"<b>Ожидаемое количество:</b> {context.user_data['people']}"
-    )
+    f"<b>Проверьте данные:</b>\n\n"
+    f"<b>Тип:</b> {context.user_data['type']}\n"
+    f"<b>Категория:</b> {context.user_data['category']}\n"
+    f"<b>Дата:</b> {context.user_data['date']}\n"
+    f"<b>Время начала:</b> {context.user_data['start_time']}\n"
+    f"<b>Место:</b> {context.user_data['place']}\n"
+    f"<b>Имя:</b> {context.user_data['name']}\n"
+    f"<b>Телефон:</b> {context.user_data['phone']}\n"
+    f"\n"
+    f"<b>Описание:</b>\n{context.user_data['description']}\n"
+    f"\n"
+    f"<b>Ожидаемое количество:</b> {context.user_data['people']}"
+)
 
     keyboard = [
         ["✅ Подтвердить"],
