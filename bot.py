@@ -120,7 +120,7 @@ async def get_date(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "Введите время начала мероприятия (например: 14:00)"
     )
-return TIME
+    return TIME
 
 async def get_time(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
