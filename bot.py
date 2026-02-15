@@ -118,10 +118,6 @@ async def get_date(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data["date"] = user_input
 
     await update.message.reply_text(
-        "Шаг 4 из 6\n\nГде будет проходить мероприятие?"
-    )
-
-    await update.message.reply_text(
         "Введите время начала мероприятия (например: 14:00)"
     )
 return TIME
