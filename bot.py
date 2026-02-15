@@ -24,7 +24,7 @@ if not google_creds:
 
 creds_dict = json.loads(google_creds)
 gc = gspread.service_account_from_dict(creds_dict)
-sheet = gc.open("Order_Yakutia.media").worksheet("СОБЫТИЕ")
+sheet = gc.open("Order_Yakutia.media").worksheet("СОБЫТИЯ")
 
 TYPE, CATEGORY, DATE, TIME, PLACE, PEOPLE, NAME, PHONE, DESCRIPTION, CONFIRM = range(10)
 
