@@ -1,5 +1,7 @@
 import datetime
 import json
+import uuid
+import string
 from datetime import datetime
 from telegram.ext import MessageHandler
 from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove
@@ -265,7 +267,8 @@ async def confirm_application(update: Update, context: ContextTypes.DEFAULT_TYPE
         return CONFIRM
 
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    event_id = datetime.now().strftime("%Y%m%d%H%M%S")
+    event_id = generate_event_id(sheet)
+    context.user_data["event_id"] = event_id
 
     sheet.append_row([
     event_id,
@@ -282,7 +285,7 @@ async def confirm_application(update: Update, context: ContextTypes.DEFAULT_TYPE
     context.user_data["description"]
 ])
     message = (
-    f"<b>📥 Новая заявка</b>\n\n"
+    f"<b>📥 Новая заявка #{event_id}</b>\n\n"
     f"<b>Тип:</b> {context.user_data['type']}\n"
     f"<b>Категория:</b> {context.user_data['category']}\n"
     f"<b>Дата:</b> {context.user_data['date']}\n"
@@ -303,7 +306,7 @@ async def confirm_application(update: Update, context: ContextTypes.DEFAULT_TYPE
     keyboard = [["🚀 Старт заявки"]]
 
     await update.message.reply_text(
-        "✅ Заявка отправлена.",
+        f"✅ Заявка отправлена.\nID события: {event_id}",
         reply_markup=ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
     )
 
@@ -328,6 +331,23 @@ def normalize_phone(raw_phone: str) -> str:
         return "+7" + digits
 
     return None
+
+def generate_event_id(sheet):
+    chars = string.digits + string.ascii_uppercase
+    existing_ids = set(sheet.col_values(1))
+
+    while True:
+        raw = uuid.uuid4().int
+        event_id = ""
+
+        while raw > 0 and len(event_id) < 5:
+            raw, i = divmod(raw, 36)
+            event_id = chars[i] + event_id
+
+        event_id = event_id.zfill(5)
+
+        if event_id not in existing_ids:
+            return event_id
 
 def main():
 
